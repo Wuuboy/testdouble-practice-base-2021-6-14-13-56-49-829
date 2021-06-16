@@ -22,5 +22,22 @@ class TradingServiceTest {
         verify(auditService, times(1)).logNewTrade(any());
     }
 
+    @Test
+    void should_return_value_equals_to_value_findById_when_findTrade() {
+        //given
+        AuditService auditService = mock(AuditService.class);
+        TradeRepository tradeRepository = mock(TradeRepository.class);
+        TradingService tradingService = new TradingService(tradeRepository, auditService);
+
+        Trade expectedTrade = new Trade("test", "test");
+        when(tradeRepository.findById(anyLong())).thenReturn(expectedTrade);
+
+        //when
+        Trade actualTrade = tradingService.findTrade(anyLong());
+
+        //then
+        assertEquals(expectedTrade, actualTrade);
+    }
+
 
 }
