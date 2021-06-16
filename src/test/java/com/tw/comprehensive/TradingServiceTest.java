@@ -39,5 +39,24 @@ class TradingServiceTest {
         assertEquals(expectedTrade, actualTrade);
     }
 
+    @Test
+    void should_call_createTrade_and_return_the_same_id_when_createTrade() {
+        //given
+        AuditService auditService = mock(AuditService.class);
+        TradeRepository tradeRepository = mock(TradeRepository.class);
+        TradingService tradingService = new TradingService(tradeRepository, auditService);
+
+        Long expectedId = 20210616L;
+        when(tradeRepository.createTrade(any())).thenReturn(expectedId);
+
+        //when
+        Long actualId = tradingService.createTrade(new Trade("test", "test"));
+
+        //then
+        verify(tradeRepository, times(1)).createTrade(any());
+        assertSame(expectedId, actualId);
+
+    }
+
 
 }
